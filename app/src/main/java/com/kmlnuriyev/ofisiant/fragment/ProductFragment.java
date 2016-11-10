@@ -74,7 +74,7 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
             }
         });
 
-        //Tabhost activity
+        // Tabhost activity implementation
         TabHost tabHost = (TabHost) view.findViewById(R.id.tabHostProduct);
         tabHost.setup();
         //Tab for adding product
