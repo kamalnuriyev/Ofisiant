@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Ofisiant</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="tables">Masalar</string>
+    <string name="addTableText">Masa əlavə et</string>
+    <string name="addCategoryText">Kateqoriya əlavə et</string>
+    <string name="addProductText">Yemək/İçkİ/Salat əlavə et</string>
+
+    <string name="addButtonText">Əlavə et</string>
+
+    <string name="tableNo">Masa nömrəsi</string>
+    <string name="categoryName">Kateqoriya adı</string>
+
+    <string name="nameHint">Ad</string>
+    <string name="priceHint">Qiymət</string>
+</resources>

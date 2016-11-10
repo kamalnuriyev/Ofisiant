@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_main"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Əsas ekran" />
+        <item
+            android:id="@+id/nav_table"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Masa" />
+        <item
+            android:id="@+id/nav_category"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Kateqoriya" />
+        <item
+            android:id="@+id/nav_product"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Yemək/İçki/Salat" />
+    </group>
+</menu>

@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragmentMainLayout"
+    tools:context="com.kmlnuriyev.ofisiant.fragment.MainFragment">
+
+    <TextView
+        android:text="@string/tables"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tablesTextView"
+        android:textSize="36sp"
+        android:textStyle="normal|bold"
+        android:textAllCaps="true"
+        android:textAlignment="center"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="20dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tablesTextView"
+        android:layout_marginTop="40dp">
+
+        <com.kmlnuriyev.ofisiant.layout.FlowLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tablesFlowLayout" />
+    </ScrollView>
+
+</RelativeLayout>
