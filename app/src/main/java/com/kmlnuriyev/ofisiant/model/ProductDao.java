@@ -36,7 +36,7 @@ public class ProductDao {
         return resultMessage;
     }
 
-    public List<String> getProducts() {
+    public List<String> getProductNameList() {
         Cursor c = MainActivity.getContextOfApplication().getContentResolver().query(Products.CONTENT_URI, null, null, null, "name");
         List<String> productNameList = new ArrayList<String>();
 
@@ -51,6 +51,55 @@ public class ProductDao {
         }
 
         return productNameList;
+    }
+
+    public List<Products> getProductList() {
+        Cursor c = MainActivity.getContextOfApplication().getContentResolver().query(Products.CONTENT_URI, null, null, null, "name");
+        List<Products> productList = new ArrayList<>();
+        Products product = null;
+
+        try {
+            if (c.moveToFirst()) {
+                do {
+                    product = new Products();
+                    product.setName(c.getString(c.getColumnIndex(Products.COLUMN_NAME)));
+                    product.setPrice(c.getInt(c.getColumnIndex(Products.COLUMN_PRICE)));
+                    product.setCategoryId(c.getInt(c.getColumnIndex(Products.COLUMN_CATEGORY_ID)));
+
+                    productList.add(product);
+                } while (c.moveToNext());
+            }
+        } finally {
+            c.close();
+        }
+
+        return productList;
+    }
+
+    public List<Products> getProductListByCategoryId(int categoryId) {
+        String selectionClause = Products.COLUMN_CATEGORY_ID + " = ?";
+        String[] selectionArgs = {""};
+        selectionArgs[0] = String.valueOf(categoryId);
+        Cursor c = MainActivity.getContextOfApplication().getContentResolver().query(Products.CONTENT_URI, null, selectionClause, selectionArgs, Products.COLUMN_NAME);
+        List<Products> productList = new ArrayList<>();
+        Products product;
+
+        try {
+            if (c.moveToFirst()) {
+                do {
+                    product = new Products();
+                    product.setName(c.getString(c.getColumnIndex(Products.COLUMN_NAME)));
+                    product.setPrice(c.getInt(c.getColumnIndex(Products.COLUMN_PRICE)));
+                    product.setCategoryId(c.getInt(c.getColumnIndex(Products.COLUMN_CATEGORY_ID)));
+
+                    productList.add(product);
+                } while (c.moveToNext());
+            }
+        } finally {
+            c.close();
+        }
+
+        return productList;
     }
 
 }

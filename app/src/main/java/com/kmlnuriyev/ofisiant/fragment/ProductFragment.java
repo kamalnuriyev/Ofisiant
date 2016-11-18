@@ -3,6 +3,7 @@ package com.kmlnuriyev.ofisiant.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,22 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.kmlnuriyev.ofisiant.MainActivity;
 import com.kmlnuriyev.ofisiant.R;
+import com.kmlnuriyev.ofisiant.adapter.ProductListAdapter;
+import com.kmlnuriyev.ofisiant.expandListClasses.ProductChild;
+import com.kmlnuriyev.ofisiant.expandListClasses.ProductGroup;
 import com.kmlnuriyev.ofisiant.model.CategoryDao;
 import com.kmlnuriyev.ofisiant.model.ProductDao;
+import com.kmlnuriyev.ofisiant.table.Categories;
+import com.kmlnuriyev.ofisiant.table.Products;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,8 +37,12 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
     Spinner categorySpinner;
     Button addProductButton;
     EditText productNameText, productPriceText;
-    ArrayAdapter<String> arrayAdapter;
-    ListView productListView;
+//    ArrayAdapter<String> arrayAdapter;
+//    ListView productListView;
+
+    private ProductListAdapter productListAdapter;
+    private ArrayList<ProductGroup> productGroupList;
+    private ExpandableListView productExpandableListView;
 
     public ProductFragment() {
         // Required empty public constructor
@@ -74,7 +85,7 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
             }
         });
 
-        // Tabhost activity implementation
+        // Tabhost activity
         TabHost tabHost = (TabHost) view.findViewById(R.id.tabHostProduct);
         tabHost.setup();
         //Tab for adding product
@@ -92,10 +103,26 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
             @Override
             public void onTabChanged(String tabId) {
                 //Table list view
-                arrayAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.product_listview, productDao.getProducts());
-                productListView = (ListView) view.findViewById(R.id.productListView);
-                productListView.setAdapter(arrayAdapter);
+//                arrayAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.product_listview, productDao.getProductNameList());
+//                productListView = (ListView) view.findViewById(R.id.productListView);
+//                productListView.setAdapter(arrayAdapter);
                 //End table list view implementation
+
+                if (tabId.equals("Product List")) {
+                    //Expandible List View
+                    productExpandableListView = (ExpandableListView) view.findViewById(R.id.productExpandableListView);
+                    productExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                        @Override
+                        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                            Log.i("clicked child", "aaa");
+                            return true;
+                        }
+                    });
+                    productGroupList = setGroupItems();
+                    productListAdapter = new ProductListAdapter(view.getContext(), productGroupList);
+                    productExpandableListView.setAdapter(productListAdapter);
+                }
+                //END Expandible List View implementation
             }
         });
         //End TableHost implementation
@@ -104,11 +131,95 @@ public class ProductFragment extends Fragment implements AdapterView.OnItemSelec
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-    }
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {}
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> parent) {}
 
+    public ArrayList<ProductGroup> setGroupItems() {
+        ProductDao productDao = new ProductDao();
+        CategoryDao categoryDao = new CategoryDao();
+        ArrayList<ProductGroup> productGroupList = new ArrayList<>();
+        ArrayList<ProductChild> productChildList;
+        ProductGroup productGroup;
+        ProductChild productChild;
+        List<String> categoryNameList = categoryDao.getCategoryNameList();
+        List<Categories> categoryList = categoryDao.getCategoryList();
+        List<Products> productList = null;
+
+        for (Categories category : categoryList) {
+            productChildList = new ArrayList<>();
+            productGroup = new ProductGroup();
+            productGroup.setCategory(category);
+
+            productList = productDao.getProductListByCategoryId(category.getId());
+
+            for (Products product:productList) {
+                productChild = new ProductChild();
+                productChild.setName(product.getName());
+                productChild.setPrice(product.getPrice());
+                productChild.setCategoryId(product.getCategoryId());
+
+                productChildList.add(productChild);
+            }
+            productGroup.setProductChildList(productChildList);
+            productGroupList.add(productGroup);
+        }
+
+        return productGroupList;
     }
+
+    /*public ArrayList<ProductGroup> setStandardGroups() {
+        ArrayList<ProductGroup> productGroupList = new ArrayList<>();
+        ArrayList<ProductChild> productChildList = new ArrayList<>();
+
+        ProductGroup productGroup = new ProductGroup();
+        ProductChild productChild = null;
+
+        ///////////////////////////////////////////
+        productGroup.setCategoryName("Salatlar");
+
+        productChild = new ProductChild();
+        productChild.setName("Coban");
+        productChildList.add(productChild);
+
+        productChild = new ProductChild();
+        productChild.setName("Suba");
+        productChildList.add(productChild);
+
+        productChild = new ProductChild();
+        productChild.setName("Mimoza");
+        productChildList.add(productChild);
+
+        productGroup.setProductChildList(productChildList);
+        productChildList = new ArrayList<>();
+        /////////
+        productGroupList.add(productGroup);
+
+        Log.i("Product List 1", productGroupList.size()+"");
+
+        //////////////////////////////
+        productGroup = new ProductGroup();
+        productGroup.setCategoryName("Suplar");
+
+        productChild = new ProductChild();
+        productChild.setName("Merci");
+        productChildList.add(productChild);
+
+        productChild = new ProductChild();
+        productChild.setName("Toyuq");
+        productChildList.add(productChild);
+
+        productChild = new ProductChild();
+        productChild.setName("Dovga");
+        productChildList.add(productChild);
+
+        productGroup.setProductChildList(productChildList);
+
+        ///////////////
+        productGroupList.add(productGroup);
+        Log.i("Product List 2", productGroupList.size()+"");
+
+        return productGroupList;
+    }*/
 }

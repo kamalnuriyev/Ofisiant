@@ -93,10 +93,14 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <ListView
+                    <ExpandableListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/productListView" />
+                        android:id="@+id/productExpandableListView" />
+                    <!--<ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/productListView" />-->
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

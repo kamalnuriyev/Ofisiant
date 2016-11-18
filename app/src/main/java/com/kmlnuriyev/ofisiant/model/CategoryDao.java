@@ -54,6 +54,27 @@ public class CategoryDao {
         return categoryList;
     }
 
+    public List<Categories> getCategoryList() {
+        Cursor c = MainActivity.getContextOfApplication().getContentResolver().query(Categories.CONTENT_URI, null, null, null, Categories.COLUMN_NAME);
+        List<Categories> categoryList = new ArrayList<>();
+        Categories category;
+
+        try {
+            if (c.moveToFirst()) {
+                do {
+                    category = new Categories();
+                    category.setId(Integer.parseInt(c.getString(c.getColumnIndex(Categories.COLUMN_ID))));
+                    category.setName(c.getString(c.getColumnIndex(Categories.COLUMN_NAME)));
+                    categoryList.add(category);
+                } while (c.moveToNext());
+            }
+        } finally {
+            c.close();
+        }
+
+        return categoryList;
+    }
+
     public String createCategory(String categoryName) {
         String resultMessage = null;
         ContentValues values = new ContentValues();

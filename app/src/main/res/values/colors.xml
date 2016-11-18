@@ -3,4 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="expChildColor">#dfdfdf</color>
+    <color name="expGroupColor">#7c7c7c</color>
+    <color name="textChildColor">#000</color>
+    <color name="textGroupColor">#fff</color>
 </resources>
